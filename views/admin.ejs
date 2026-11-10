@@ -1,0 +1,38 @@
+<h1 class="mt-4">Admin</h1>
+<p class="lead">Logged in sessions</p>
+
+<% if (!sessions.length) { %>
+  <p>No sessions right now.</p>
+<% } else { %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Session ID</th>
+        <th class="text-nowrap">User ID</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% sessions.forEach(function(row) { %>
+        <tr>
+          <td class="text-break"><%= row.sessionId %></td>
+          <td>
+            <%= row.userId %>
+            <% if (row.sessionId === currentSessionId) { %> (you)<% } %>
+          </td>
+          <td>
+            <% if (row.sessionId === currentSessionId) { %>
+              <button class="btn btn-secondary btn-sm" disabled>This is your session</button>
+            <% } else { %>
+              <form action="/admin/revoke/<%= row.sessionId %>" method="POST">
+                <button type="submit" class="btn btn-danger btn-sm">Revoke Session</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<a href="/dashboard" class="btn btn-secondary">Back</a>
